@@ -86,6 +86,20 @@ export class Tree {
     }
 
     levelOrder(callBack) {
+        if(!callBack) throw new Error('This Function Requires A Callback');
+
+        if (this.root === null) return;
+
+        const queue = [];
+        queue.push(this.root);
         
+        while (queue.length !== 0) {
+            let cur = queue[0];
+            
+            callBack(cur)
+            if(cur.left !== null) queue.push(cur.left);
+            if(cur.right !== null) queue.push(cur.right);
+            queue.shift();
+        }
     }
 }
