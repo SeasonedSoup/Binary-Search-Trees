@@ -179,7 +179,7 @@ export class Tree {
     depth(value) {
         let node = this.root 
         if(!node) return null;
-        
+
         return calcDepth(node)
 
         function calcDepth(node) {
@@ -195,5 +195,29 @@ export class Tree {
 
             return Math.max(leftDepth, rightDepth) + 1
         }
+    }
+
+    isBalanced() {
+        let node = this.root 
+        let balanced = true
+        balanceChecker(node) 
+        return balanced
+        
+        function balanceChecker(node) {
+            if(node === null) return 0 
+            if(balanced === false) return -1
+            let left = balanceChecker(node.left)
+            let right = balanceChecker(node.right)
+
+            if(Math.abs(left - right) > 1) {
+                balanced = false
+            }
+
+            return max(left, right) + 1
+        }
+    }
+    //utilize inorder traversal
+    rebalance() {
+
     }
 }
