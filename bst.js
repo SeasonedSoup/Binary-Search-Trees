@@ -71,7 +71,7 @@ export class Tree {
         }
         return node
     }
-
+    //find the node containing the value
     find(value, node = this.root) {
         if (node === null) {
             return node
@@ -84,7 +84,7 @@ export class Tree {
             return node
         }
     }
-
+    //bfs trav
     levelOrder(callBack) {
         if(typeof(callBack) !== 'function') throw new Error('This Function Requires A Callback');
 
@@ -102,7 +102,7 @@ export class Tree {
             queue.shift();
         }
     }
-
+    //3 dfs trav
     inOrder(callBack) {
         const traverseInOrder = (node) => {
             if (!node) return
@@ -144,5 +144,56 @@ export class Tree {
 
         if (this.root === null) return;
         traversePostOrder(this.root)
+    }
+    //get height
+    height(value) {
+        let node = this.root 
+        let cur = findNode(node)
+        
+        if(cur) {
+            return calcHeight(cur);
+        } else {
+            return -1;
+        }
+        
+        function findNode(node) {
+            if (!node) return null
+            if(node.value === value) return node;
+            if(node.value > value) {
+                return findNode(node.left)
+            } else {
+                return findNode(node.right)
+            }
+        }
+
+        function calcHeight(node) {
+            if(!node) return -1
+
+            let leftHeight = calcHeight(node.left)
+            let rightHeight = calcHeight(node.right)
+
+            return Math.max(leftHeight, rightHeight) + 1
+        };
+    }
+    //get depth
+    depth(value) {
+        let node = this.root 
+        if(!node) return null;
+        
+        return calcDepth(node)
+
+        function calcDepth(node) {
+            if (!node) return -1
+
+            if(node.value === value) return 0;
+            let leftDepth = calcDepth(node.left)
+            let rightDepth = calcDepth(node.right)
+
+            if(leftDepth === -1 && rightDepth === -1) {
+                return null
+            }
+
+            return Math.max(leftDepth, rightDepth) + 1
+        }
     }
 }
