@@ -16,7 +16,7 @@ export class Tree {
         }
         let m = Math.floor((start + end) / 2)
 
-        const node = newNode(arr[m])
+        const node = new Node(arr[m])
         
         node.left = this.buildTree(arr, start, m - 1)
         node.right =this.buildTree(arr, m + 1, end)
@@ -86,7 +86,7 @@ export class Tree {
     }
 
     levelOrder(callBack) {
-        if(!callBack) throw new Error('This Function Requires A Callback');
+        if(typeof(callBack) !== 'function') throw new Error('This Function Requires A Callback');
 
         if (this.root === null) return;
 
@@ -101,5 +101,48 @@ export class Tree {
             if(cur.right !== null) queue.push(cur.right);
             queue.shift();
         }
+    }
+
+    inOrder(callBack) {
+        const traverseInOrder = (node) => {
+            if (!node) return
+            traverseInOrder(node.left);
+            callBack(node)
+            traverseInOrder(node.right);
+        }
+
+        if(typeof(callBack) !== 'function') throw new Error('This Function Requires A Callback');
+
+        if (this.root === null) return;
+        traverseInOrder(this.root)
+    }
+
+    preOrder(callBack) {
+        const traversePreOrder = (node) => {
+            if (!node) return
+            callBack(node)
+            traversePreOrder(node.left);
+            traversePreOrder(node.right);
+        }
+
+        if(typeof(callBack) !== 'function') throw new Error('This Function Requires A Callback');
+
+        if (this.root === null) return;
+        traversePreOrder(this.root)
+    }
+
+    postOrder(callBack) {
+        const traversePostOrder = (node) => {
+            if (!node) return
+            
+            traversePostOrder(node.left)
+            traversePostOrder(node.right)
+            callBack(node)
+        }
+
+        if(typeof(callBack) !== 'function') throw new Error('This Function Requires A Callback');
+
+        if (this.root === null) return;
+        traversePostOrder(this.root)
     }
 }
