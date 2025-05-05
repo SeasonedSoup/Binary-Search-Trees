@@ -44,7 +44,7 @@ export class Tree {
 
     insert(value, node = this.root) {
         if (node === null) {
-            return newNode(value);
+            return new Node(value);
         }
 
         if (node.value === value) {
@@ -126,7 +126,7 @@ export class Tree {
         const traverseInOrder = (node) => {
             if (!node) return
             traverseInOrder(node.left);
-            callBack(node)
+            callBack(node.value)
             traverseInOrder(node.right);
         }
 
@@ -139,7 +139,7 @@ export class Tree {
     preOrder(callBack) {
         const traversePreOrder = (node) => {
             if (!node) return
-            callBack(node)
+            callBack(node.value)
             traversePreOrder(node.left);
             traversePreOrder(node.right);
         }
@@ -156,7 +156,7 @@ export class Tree {
             
             traversePostOrder(node.left)
             traversePostOrder(node.right)
-            callBack(node)
+            callBack(node.value)
         }
 
         if(typeof(callBack) !== 'function') throw new Error('This Function Requires A Callback');
@@ -232,7 +232,7 @@ export class Tree {
                 balanced = false
             }
 
-            return max(left, right) + 1
+            return Math.max(left, right) + 1
         }
     }
     //utilize inorder traversal
