@@ -7,8 +7,13 @@ class Node {
 }
 export class Tree {
     constructor(arr = []) {
-        this.arr = {...new Set(arr.sort((a, b) => a - b))}
-        this.root = buildTree(this.arr)
+
+        if(!Array.isArray(arr)) {
+            throw new Error("Not a valid array");
+        }
+
+        this.arr = [...new Set(arr.sort((a, b) => a - b))]
+        this.root = this.buildTree(this.arr)
     }
     buildTree(arr, start = 0, end = arr.length - 1) {
         if(start > end ) {
@@ -23,6 +28,20 @@ export class Tree {
 
         return node
     }
+
+    prettyPrint(node, prefix = "", isLeft = true) {
+        if (node === null) {
+          return;
+        }
+        if (node.right !== null) {
+          this.prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+        }
+        console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.value}`);
+        if (node.left !== null) {
+          this.prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+        }
+    };
+
     insert(value, node = this.root) {
         if (node === null) {
             return newNode(value);
@@ -31,9 +50,9 @@ export class Tree {
         if (node.value === value) {
             return node
         }
-        else if (node.value < value) {
+        else if (node.value > value) {
             node.left = this.insert(value, node.left)
-        } else if (this.root.value > value) {
+        } else if (node.value < value) {
             node.right = this.insert(value, node.right)
         }   
         return node
@@ -76,9 +95,9 @@ export class Tree {
         if (node === null) {
             return node
         }
-        if(node.value < value) {
+        if(node.value > value) {
             return this.find(value, node.left) 
-        } else if(node.value > value) {
+        } else if(node.value < value) {
             return this.find(value, node.right)
         } else {
             return node
@@ -218,6 +237,9 @@ export class Tree {
     }
     //utilize inorder traversal
     rebalance() {
-
+        let newArr = [];
+        this.inOrder(node => newArr.push(node))
+        newArr = [...new Set(newArr.sort((a, b ) => a - b))]
+        this.root = this.buildTree(newArr);
     }
 }
